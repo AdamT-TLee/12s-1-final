@@ -56,7 +56,7 @@ export default function LoginForm() {
   }, [passwordVisibleR]);
 
   return (
-    <div className="d-flex text-center align-items-center justify-content-center align-content-center vh-100 vw-100">
+    <div className="d-flex align-items-center justify-content-center align-content-center vh-100 vw-100">
       <div className="container bg-light rounded px-0">
         <ul className="nav nav-tabs nav-fill">
           <li className="nav-item" role="presentation">
