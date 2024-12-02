@@ -10,7 +10,7 @@ import {
 import Home from "./Home";
 import About from "./About";
 import Products from "./Products";
-import Login from "./Login";
+import LoginRegister from "./LoginRegister";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const router = createBrowserRouter(
@@ -19,7 +19,8 @@ const router = createBrowserRouter(
       <Route path="" element={<Home />} />
       <Route path="about" element={<About />} />
       <Route path="products" element={<Products />} />
-      <Route path="login" element={<Login />} />
+      <Route path="login" element={<LoginRegister />} />
+      <Route path="register" element={<LoginRegister />} />
     </Route>
   )
 );
