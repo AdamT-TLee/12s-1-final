@@ -3,7 +3,6 @@ const mysql = require("mysql2");
 const multer = require("multer");
 const express = require("express");
 const cors = require("cors");
-const cookieParser = require("cookie-parser");
 const path = require("path");
 
 // MySQL
@@ -37,7 +36,6 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(cookieParser());
 app.use("/uploads", express.static("uploads"));
 
 app.listen(port, () => {
@@ -45,7 +43,6 @@ app.listen(port, () => {
 });
 
 app.get("/products", (req, res) => {
-  console.log(req.cookies);
   const query = "SELECT * FROM product";
 
   db.query(query, (err, result) => {
@@ -74,6 +71,8 @@ app.get("/product/:id", (req, res) => {
         .status(400)
         .send({ error: "Failed to find product with id " + id });
     }
+
+    console.log([...results]);
 
     return res.status(200).send(results[0]);
   });

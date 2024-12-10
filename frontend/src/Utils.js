@@ -152,7 +152,7 @@ export function Carousel({ id, products }) {
                 className="align-content-center link-light link-opacity-50-hover link-underline-opacity-50-hover"
               >
                 <img
-                  src={`http://localhost:8081${product.image_url}`}
+                  src={process.env.REACT_APP_BASE_API + product.image_url}
                   className="img-fluid rounded-2 img-thumbnail border-light border-3 bg-light-subtle"
                   alt={`${product.name}`}
                 />
@@ -162,7 +162,7 @@ export function Carousel({ id, products }) {
               <div className="card-body">
                 <h3 className="card-title">
                   <Link
-                    to={`/product?id=${product.id}`}
+                    to={`/product/${product.id}`}
                     className="link-light link-opacity-50-hover link-underline-opacity-50-hover"
                   >
                     {product.name}
