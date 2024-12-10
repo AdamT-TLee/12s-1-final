@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { Carousel } from "./Utils";
 
 export default function Home() {
-  let [products, setProducts] = useState([]);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const response = await fetch("http://localhost:8081/products");
+      const response = await fetch(process.env.REACT_APP_PRODUCTS);
       const data = await response.json();
 
       setProducts(data);

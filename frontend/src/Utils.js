@@ -1,11 +1,24 @@
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.min.js";
-import "bootstrap-icons/font/bootstrap-icons.css";
 import "./Carousel.css";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-export function Navbar() {
+export function Navbar({ user, setUser }) {
+  const navigate = useNavigate();
+
+  const searchProducts = async (e) => {
+    e.preventDefault();
+
+    const data = new FormData(e.target);
+
+    const search = data.get("search");
+
+    let url = `/products/${search}`;
+
+    if (search.trim() !== "") {
+      navigate(url);
+    }
+  };
+
   return (
     <header data-bs-theme="dark">
       <nav className="navbar navbar-expand-lg bg-dark">
@@ -38,10 +51,11 @@ export function Navbar() {
                 </Link>
               </li>
             </ul>
-            <form className="d-flex me-2">
+            <form className="d-flex me-2" onSubmit={searchProducts}>
               <input
                 className="form-control me-2"
                 type="search"
+                name="search"
                 placeholder="Search"
                 aria-label="Search"
               />
@@ -74,30 +88,46 @@ export function Navbar() {
                 </svg>
               </a>
               <ul className="dropdown-menu dropdown-menu-end">
-                <li>
-                  <h5 className="dropdown-item-text">email@gmail.com</h5>
-                </li>
-                <li>
-                  <hr className="dropdown-divider" />
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/login">
-                    My Products
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="#">
-                    My Cart
-                  </Link>
-                </li>
-                <li>
-                  <hr className="dropdown-divider" />
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="#">
-                    Logout
-                  </Link>
-                </li>
+                {user ? (
+                  <>
+                    <li>
+                      <h5 className="dropdown-item-text">{user.email}</h5>
+                    </li>
+                    <li>
+                      <hr className="dropdown-divider" />
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/login">
+                        My Products
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="#">
+                        My Cart
+                      </Link>
+                    </li>
+                    <li>
+                      <hr className="dropdown-divider" />
+                    </li>
+                    <li>
+                      <button
+                        className="dropdown-item"
+                        to="#"
+                        onClick={() => setUser(null)}
+                      >
+                        Logout
+                      </button>
+                    </li>
+                  </>
+                ) : (
+                  <>
+                    <li>
+                      <Link className="dropdown-item" to="/login">
+                        Login/Register
+                      </Link>
+                    </li>
+                  </>
+                )}
               </ul>
             </div>
           </div>
