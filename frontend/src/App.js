@@ -2,13 +2,14 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
+import { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Navbar } from "./Utils.js";
 import Home from "./Home";
 import About from "./About";
-import Products, { Product } from "./Products";
+import Products from "./Products";
+import Product from "./Product";
 import LoginRegister from "./LoginRegister";
-import { useState } from "react";
 
 export default function App() {
   const [user, setUser] = useState(null);

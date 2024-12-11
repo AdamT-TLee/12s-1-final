@@ -10,14 +10,10 @@ export default function Products() {
 
   useEffect(() => {
     let getProducts = async () => {
-      console.log(process.env.REACT_APP_PRODUCTS);
-
       const response = await fetch(process.env.REACT_APP_PRODUCTS);
       const json = await response.json();
 
-      console.log(json);
-
-      if (search) {
+      if (search && search.trim() !== "") {
         let s = new JsSearch.Search("id");
         s.addIndex("name");
         s.addDocuments(json);
@@ -33,13 +29,16 @@ export default function Products() {
 
   const productCards = products.map((product) => {
     return (
-      <div className="row" key={product.id}>
-        <div className="card shadow-sm">
-          <img
-            src={process.env.REACT_APP_BASE_API + product.image_url}
-            alt={product.name}
-            className="mt-3 img-fluid img-thumbnail border-light border-3 bg-light-subtle"
-          />
+      <div className="col justify-content-center" key={product.id}>
+        <div className="card w-100 h-100">
+          <div className="card-header p-0 align-content-center justify-content-center text-center">
+            <img
+              src={process.env.REACT_APP_BASE_API + product.image_url}
+              alt={product.name}
+              className="card-img-top img-thumbnail border-3 border-light m-2"
+            />
+          </div>
+
           <div className="card-body">
             <h3 className="card-title">{product.name}</h3>
             <p className="card-text">{product.description}</p>
@@ -63,60 +62,40 @@ export default function Products() {
   });
 
   return (
-    <div className="album py-5">
+    <div className="container my-5">
       <div className="container">
-        <div className="row row-colsrow row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div className="row">
+          <div className="col text-start">
+            {search ? (
+              <>
+                <h2>Results for {search}</h2>
+              </>
+            ) : (
+              <>
+                <h2>All Products</h2>
+              </>
+            )}
+          </div>
+          <div className="col text-end">
+            <div className="dropdown">
+              <select class="form-select" aria-label="Select filter">
+                <option selected hidden>
+                  Select filter...
+                </option>
+                <option value="id">Product ID</option>
+                <option value="alphabetical">Alphabetically</option>
+                <option value="priceasc">Price</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="album my-5" data-bs-theme="dark">
+        <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
           {productCards}
         </div>
       </div>
     </div>
   );
-}
-
-export function Product() {
-  const { id } = useParams();
-  const [product, setProduct] = useState([]);
-
-  useEffect(() => {
-    let fetchProduct = async () => {
-      const response = await fetch(`${process.env.REACT_APP_PRODUCT}/${id}`);
-
-      const json = await response.json();
-      setProduct(json);
-    };
-
-    fetchProduct();
-  }, []);
-
-  let card = (
-    <div className="card p-3 mt-5" data-bs-theme="dark">
-      <div className="row g-0">
-        <div className="col-md-4 d-flex justify-content-center">
-          <img
-            src={process.env.REACT_APP_BASE_API + product.image_url}
-            className="img-fluid rounded-2 img-thumbnail border-light border-3 bg-light-subtle"
-            alt={product.name}
-          />
-        </div>
-        <div className="col-md-8">
-          <div className="card-body">
-            <h3 className="card-title">{product.name}</h3>
-            <p className="card-text">{product.description}</p>
-            <p className="card-text">
-              <small className="text-muted">${product.price}</small>
-            </p>
-          </div>
-        </div>
-      </div>
-      <div className="row g-0 mt-2">
-        <div className="col-md-4 d-flex justify-content-center">
-          <a href="#" className="btn btn-primary w-100" id="purchase-btn">
-            Add to Cart
-          </a>
-        </div>
-      </div>
-    </div>
-  );
-
-  return <div className="container">{card}</div>;
 }

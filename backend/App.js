@@ -72,8 +72,6 @@ app.get("/product/:id", (req, res) => {
         .send({ error: "Failed to find product with id " + id });
     }
 
-    console.log([...results]);
-
     return res.status(200).send(results[0]);
   });
 });
