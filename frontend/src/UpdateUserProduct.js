@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import * as yup from "yup";
 
-import "./UpdateUserProduct.css";
+import "./UserProduct.css";
 
 const schema = yup
   .object({
@@ -25,7 +25,7 @@ export default function UpdateUserProduct() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ mode: "all", resolver: yupResolver(schema) });
+  } = useForm({ mode: "onSubmit", resolver: yupResolver(schema) });
 
   useEffect(() => {
     let fetchProduct = async () => {
@@ -105,10 +105,10 @@ export default function UpdateUserProduct() {
                   className="form-control"
                   onChange={handleChange}
                 ></input>
-                {errors.name && (
-                  <p className="text-danger">{errors.name.message}</p>
-                )}
               </div>
+              {errors.name && (
+                <p className="text-danger">{errors.name.message}</p>
+              )}
             </div>
             <div className="col-4">
               <label htmlFor="priceInput" className="form-label">
@@ -121,18 +121,19 @@ export default function UpdateUserProduct() {
                   {...register("price")}
                   defaultValue={product.price}
                   className="form-control"
+                  onChange={handleChange}
                 ></input>
-                {errors.price && (
-                  <p className="text-danger">{errors.price.message}</p>
-                )}
               </div>
+              {errors.price && (
+                <p className="text-danger">{errors.price.message}</p>
+              )}
             </div>
           </div>
 
           <div className="row my-4">
             <div className="col">
               <label htmlFor="descriptionInput" className="form-label">
-                Description
+                Description (Optional)
               </label>
               <div className="input-group">
                 <textarea
@@ -141,10 +142,10 @@ export default function UpdateUserProduct() {
                   defaultValue={product.description}
                   className="form-control"
                 ></textarea>
-                {errors.image && (
-                  <p className="text-danger">{errors.image.message}</p>
-                )}
               </div>
+              {errors.description && (
+                <p className="text-danger">{errors.description.message}</p>
+              )}
             </div>
           </div>
 
@@ -165,10 +166,10 @@ export default function UpdateUserProduct() {
                   className="form-control"
                   onChange={handleChange}
                 ></input>
-                {errors.image && (
-                  <p className="text-danger">{errors.image.message}</p>
-                )}
               </div>
+              {errors.image && (
+                <p className="text-danger">{errors.image.message}</p>
+              )}
             </div>
           </div>
 
@@ -204,7 +205,7 @@ export default function UpdateUserProduct() {
           <div className="row my-5">
             <div className="col text-start">
               <button type="submit" className="btn btn-primary">
-                Update Product
+                <i className="bi bi-pencil"></i> Update Product
               </button>
             </div>
           </div>

@@ -13,6 +13,7 @@ import LoginRegister from "./LoginRegister";
 import Cart from "./Cart";
 import UserProducts from "./UserProducts.js";
 import UpdateUserProduct from "./UpdateUserProduct.js";
+import AddUserProduct from "./AddUserProduct.js";
 
 export default function App() {
   const [cart, setCart] = useState([]);
@@ -34,6 +35,7 @@ export default function App() {
             />
             <Route path="user/products" element={<UserProducts />} />
             <Route path="user/product/:id" element={<UpdateUserProduct />} />
+            <Route path="user/addproduct" element={<AddUserProduct />} />
             <Route path="login" element={<LoginRegister />} />
             <Route path="register" element={<LoginRegister />} />
             <Route

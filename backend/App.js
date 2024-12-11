@@ -215,10 +215,10 @@ app.post("/user/product", upload.single("image"), (req, res) => {
   try {
     if (req.cookies["user"]) {
       const { name, description, price } = req.body;
-      const image_url = req.file ? `/uploads.${req.file.filename}` : null;
+      const image_url = req.file ? `/uploads/${req.file.filename}` : null;
 
-      const query = `INSERT INTO product (name, description, price, year, image_url, user_id)
-        VALUES (?, ?, ?, 0, ?, ?);`;
+      const query = `INSERT INTO product (name, description, price, image_url, user_id)
+        VALUES (?, ?, ?, ?, ?);`;
 
       const { id } = req.cookies["user"];
 
