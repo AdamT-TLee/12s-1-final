@@ -27,7 +27,35 @@ export default function Products() {
     getProducts();
   }, [search]);
 
-  const productCards = products.map((product) => {
+  const changeFilter = (e) => {
+    const copy = [...products];
+
+    switch (e.target.value) {
+      case "id":
+        copy.sort((a, b) => {
+          return a.id - b.id;
+        });
+        break;
+
+      case "alphabetical":
+        copy.sort((a, b) => {
+          return a.name.localeCompare(b.name);
+        });
+        break;
+
+      case "price":
+        copy.sort((a, b) => {
+          return a.price - b.price;
+        });
+        break;
+
+      default:
+        break;
+    }
+    setProducts(copy);
+  };
+
+  let productCards = products.map((product) => {
     return (
       <div className="col justify-content-center" key={product.id}>
         <div className="card w-100 h-100">
@@ -78,13 +106,17 @@ export default function Products() {
           </div>
           <div className="col text-end">
             <div className="dropdown">
-              <select class="form-select" aria-label="Select filter">
-                <option selected hidden>
+              <select
+                className="form-select"
+                aria-label="Select filter"
+                onChange={changeFilter}
+              >
+                <option defaultValue hidden>
                   Select filter...
                 </option>
                 <option value="id">Product ID</option>
                 <option value="alphabetical">Alphabetically</option>
-                <option value="priceasc">Price</option>
+                <option value="price">Price</option>
               </select>
             </div>
           </div>

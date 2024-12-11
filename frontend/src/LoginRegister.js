@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 export default function LoginRegister({ setUser }) {
   // Navigation setup
@@ -40,12 +41,14 @@ export default function LoginRegister({ setUser }) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": process.env.REACT_APP_BASE_API,
         },
         body: JSON.stringify(data),
+        credentials: "include",
       });
 
       if (!response.ok) {
-        if (response.status === "401") {
+        if (response.status === 401) {
           const json = await response.json();
           setLoginErrorMessage(json.error);
           return;
@@ -76,7 +79,7 @@ export default function LoginRegister({ setUser }) {
       });
 
       if (!response.ok) {
-        if (response.status === "400") {
+        if (response.status === 400) {
           const json = await response.json();
 
           setRegisterErrorMessage(json.error);
