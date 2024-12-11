@@ -25,7 +25,7 @@ const schema = yup
   })
   .required();
 
-function Cart({ cart, setFormData }) {
+function Cart({ cart, setCart, setFormData }) {
   const {
     register,
     handleSubmit,
@@ -44,6 +44,13 @@ function Cart({ cart, setFormData }) {
 
   // Convert the object to an array for mapping
   const cartItems = Object.values(itemCounts);
+
+
+  // Handle item removal
+  const removeItem = (itemId) => {
+    const updatedCart = cart.filter((item) => item.id !== itemId);
+    setCart(updatedCart); // Update the cart state
+  };
 
   // Handle form submission
   const navigate = useNavigate();
@@ -91,6 +98,9 @@ function Cart({ cart, setFormData }) {
                   <strong>{item.name}</strong> - ${item.price} x{" "}
                   {item.quantity} = ${item.price * item.quantity}
                 </div>
+                <button className="btn btn-danger btn-sm" onClick={() => removeItem(item.id)}>
+                <i class="bi bi-trash"></i> Remove
+                </button>
               </li>
             ))}
           </ul>

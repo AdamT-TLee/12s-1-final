@@ -14,10 +14,16 @@ import Cart from "./Cart";
 import UserProducts from "./UserProducts.js";
 import UpdateUserProduct from "./UpdateUserProduct.js";
 import AddUserProduct from "./AddUserProduct.js";
+import Confirmation from "./Confirmation";
 
 export default function App() {
   const [cart, setCart] = useState([]);
   const [formData, setFormData] = useState({});
+
+  
+  const clearCart = () => {
+    setCart([]); // Clear the cart
+  };
 
   return (
     <div>
@@ -40,7 +46,13 @@ export default function App() {
             <Route path="register" element={<LoginRegister />} />
             <Route
               path="cart"
-              element={<Cart cart={cart} setFormData={setFormData} />}
+              element={<Cart cart={cart} setCart={setCart} setFormData={setFormData} />}
+            />
+            <Route
+              path="confirmation"
+              element={
+                <Confirmation cart={cart} dataF={formData} clearCart={clearCart} />
+              }
             />
           </Routes>
         </div>

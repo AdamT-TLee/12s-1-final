@@ -46,7 +46,7 @@ export default function Product({cart, setCart}) {
       <div className="row g-0 mt-2">
         <div className="col-md-4 d-flex justify-content-center">
           <a href="#" className="btn btn-primary w-100" id="purchase-btn" onClick={() => addToCart(product)}>
-          <i className="bi bi-cart3 me-2"></i>Add to Cart
+          <i class="bi bi-cart-plus"></i> Add to Cart
           </a>
         </div>
       </div>
