@@ -10,17 +10,21 @@ export default function Products() {
 
   useEffect(() => {
     let getProducts = async () => {
-      const response = await fetch(process.env.REACT_APP_PRODUCTS);
-      const json = await response.json();
+      try {
+        const response = await fetch(process.env.REACT_APP_PRODUCTS);
+        const json = await response.json();
 
-      if (search && search.trim() !== "") {
-        let s = new JsSearch.Search("id");
-        s.addIndex("name");
-        s.addDocuments(json);
+        if (search && search.trim() !== "") {
+          let s = new JsSearch.Search("id");
+          s.addIndex("name");
+          s.addDocuments(json);
 
-        setProducts(s.search(search));
-      } else {
-        setProducts(json);
+          setProducts(s.search(search));
+        } else {
+          setProducts(json);
+        }
+      } catch (errors) {
+        console.error(errors);
       }
     };
 

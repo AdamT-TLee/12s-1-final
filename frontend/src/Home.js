@@ -6,11 +6,15 @@ export default function Home() {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const response = await fetch(process.env.REACT_APP_PRODUCTS);
-      const data = await response.json();
+      try {
+        const response = await fetch(process.env.REACT_APP_PRODUCTS);
 
-      setProducts(data);
-      console.log(data);
+        const data = await response.json();
+
+        setProducts(data);
+      } catch (errors) {
+        console.error(errors);
+      }
     };
     fetchProducts();
   }, []);

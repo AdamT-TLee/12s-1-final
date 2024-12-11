@@ -1,0 +1,5 @@
+.preview {
+  width: auto;
+  max-width: calc(100% - 1rem);
+  max-height: 18rem;
+}

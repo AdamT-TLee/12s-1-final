@@ -4,6 +4,8 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import * as yup from "yup";
 
+import "./UpdateUserProduct.css";
+
 const schema = yup
   .object({
     name: yup.string().required("Name is required."),
@@ -73,10 +75,17 @@ export default function UpdateUserProduct() {
   };
 
   const handleChange = (e) => {
-    setProduct({
-      ...product,
-      [e.target.name]: e.target.value,
-    });
+    if (e.target.files) {
+      setProduct({
+        ...product,
+        [e.target.name]: e.target.files[0],
+      });
+    } else {
+      setProduct({
+        ...product,
+        [e.target.name]: e.target.value,
+      });
+    }
   };
 
   return (
@@ -142,7 +151,7 @@ export default function UpdateUserProduct() {
           <div className="row my-4">
             <div className="col">
               <label htmlFor="imageInput" className="form-label">
-                Image
+                Change Image
               </label>
               <div className="input-group">
                 <span className="input-group-text">
@@ -150,15 +159,46 @@ export default function UpdateUserProduct() {
                 </span>
                 <input
                   id="imageInput"
+                  accept="image/*"
                   {...register("image")}
                   type="file"
                   className="form-control"
+                  onChange={handleChange}
                 ></input>
                 {errors.image && (
                   <p className="text-danger">{errors.image.message}</p>
                 )}
               </div>
             </div>
+          </div>
+
+          <div className="row my-4">
+            <div className="col-6 text-center">
+              <label htmlFor="db-preview" className="form-label">
+                Current Image
+              </label>
+              <div>
+                <img
+                  id="db-preview"
+                  className="preview img-fluid img-thumbnail border-3 border-light p-2"
+                  src={process.env.REACT_APP_BASE_API + product.image_url}
+                />
+              </div>
+            </div>
+            {product.image && (
+              <div className="col-6 text-center">
+                <label htmlFor="selected-preview" className="form-label">
+                  Selected Image
+                </label>
+                <div>
+                  <img
+                    id="selected-preview"
+                    className="preview img-fluid img-thumbnail border-3 border-light p-2"
+                    src={URL.createObjectURL(product.image)}
+                  />
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="row my-5">
