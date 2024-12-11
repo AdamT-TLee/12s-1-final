@@ -42,6 +42,7 @@ app.use(
   })
 );
 app.use(express.json());
+app.use(express.json());
 app.use("/uploads", express.static("uploads"));
 app.use(cookieParser());
 
@@ -83,19 +84,195 @@ app.get("/product/:id", (req, res) => {
   });
 });
 
-app.get("/user/products/:userId", (req, res) => {
+app.get("/user/products", (req, res) => {
   try {
-    const userId = req.params.userId;
-    const query = "SELECT * from product WHERE user_id = ?";
+    if (req.cookies["user"]) {
+      const query = "SELECT * from product WHERE user_id = ?";
 
-    db.query(query, [userId], (err, results) => {
-      if (err) {
-        console.log("Error in GET /user/products/" + userId, err);
-        return res
-          .status(500)
-          .send({ error: "Error when getting user products " + err });
-      }
+      const { id } = req.cookies["user"];
+
+      db.query(query, [id], (err, results) => {
+        if (err) {
+          console.log("Error in GET /user/products", err);
+          return res
+            .status(500)
+            .send({ error: "Error when getting user products " + err });
+        }
+
+        return res.status(200).send(results);
+      });
+    } else {
+      return res.status(401).send({ error: "User not logged in." });
+    }
+  } catch (err) {
+    console.log("Error in GET /user/products", err);
+    return res.status(500).send({
+      error:
+        "An unexpected error occurred when getting user products: " +
+        err.message,
     });
+  }
+});
+
+app.get("/user/product/:id", (req, res) => {
+  try {
+    if (req.cookies["user"]) {
+      const productId = req.params.id;
+      const query = "SELECT * from product WHERE id = ? AND user_id = ?";
+
+      const { id } = req.cookies["user"];
+
+      db.query(query, [productId, id], (err, results) => {
+        if (err) {
+          console.log("Error in GET /user/products/" + productId, err);
+          return res.status(500).send({
+            error:
+              "Error when getting user product with id " +
+              productId +
+              " " +
+              err,
+          });
+        }
+
+        if (results.length === 0) {
+          return res.status(400).send({
+            error: "Failed to find user product with id " + productId,
+          });
+        }
+
+        return res.status(200).send(results[0]);
+      });
+    } else {
+      return res.status(401).send({ error: "User not logged in." });
+    }
+  } catch (err) {
+    console.log("Error in GET /user/products/:userId", err);
+    return res.status(500).send({
+      error:
+        "An unexpected error occurred when getting user product: " +
+        err.message,
+    });
+  }
+});
+
+app.put("/user/product/:id", upload.single("image"), (req, res) => {
+  try {
+    if (req.cookies["user"]) {
+      const { name, description, price } = req.body;
+      const image_url = req.file ? `/uploads/${req.file.filename}` : null;
+      const { id } = req.cookies["user"];
+      const productId = req.params.id;
+
+      let query = `UPDATE product
+        SET name = ?, description = ?, price = ?, image_url = ?
+        WHERE id = ? AND user_id = ?`;
+      let queryParams = [name, description, price, image_url, productId, id];
+
+      if (image_url === null) {
+        query = `UPDATE product
+        SET name = ?, description = ?, price = ?
+        WHERE id = ? AND user_id = ?`;
+
+        queryParams = [name, description, price, productId, id];
+      }
+
+      console.log([name, description, price, image_url, productId, id]);
+
+      db.query(query, queryParams, (err, results) => {
+        if (err) {
+          console.log("Error in PUT /user/products/" + productId, err);
+          return res.status(500).send({
+            error:
+              "Error when updating user product with id " +
+              productId +
+              " " +
+              err,
+          });
+        }
+
+        if (results.length === 0) {
+          return res.status(400).send({
+            error: "Failed to update user product with id " + productId,
+          });
+        }
+
+        return res.status(200).send("Sucessfully updated user product.");
+      });
+    } else {
+      return res.status(401).send({ error: "User not logged in." });
+    }
+  } catch (err) {
+    console.log("Error in GET /user/products/:userId", err);
+    return res.status(500).send({
+      error:
+        "An unexpected error occurred when getting user product: " +
+        err.message,
+    });
+  }
+});
+
+app.post("/user/product", upload.single("image"), (req, res) => {
+  try {
+    if (req.cookies["user"]) {
+      const { name, description, price } = req.body;
+      const image_url = req.file ? `/uploads.${req.file.filename}` : null;
+
+      const query = `INSERT INTO product (name, description, price, year, image_url, user_id)
+        VALUES (?, ?, ?, 0, ?, ?);`;
+
+      const { id } = req.cookies["user"];
+
+      db.query(
+        query,
+        [name, description, price, image_url, id],
+        (err, results) => {
+          if (err) {
+            console.log("Error in POST /user/products", err);
+            return res.status(500).send({
+              error: "Error when adding user product " + err,
+            });
+          }
+
+          return res.status(200).send("User product successfully added.");
+        }
+      );
+    } else {
+      return res.status(401).send({ error: "User not logged in." });
+    }
+  } catch (err) {
+    console.log("Error in POST /user/products", err);
+    return res.status(500).send({
+      error:
+        "An unexpected error occurred when adding user product: " + err.message,
+    });
+  }
+});
+
+app.delete("/user/product/:id", (req, res) => {
+  try {
+    if (req.cookies["user"]) {
+      const productId = req.params.id;
+      const query = "DELETE FROM product WHERE id = ? AND user_id = ?";
+
+      const { id } = req.cookies["user"];
+
+      db.query(query, [productId, id], (err, results) => {
+        if (err) {
+          console.log("Error in DELETE /user/products/" + userId, err);
+          return res.status(500).send({
+            error:
+              "Error when deleting user product with id " +
+              productId +
+              " " +
+              err,
+          });
+        }
+
+        return res.status(200).send("Sucessfully deleted product");
+      });
+    } else {
+      return res.status(401).send({ error: "User not logged in." });
+    }
   } catch (err) {
     console.log("Error in GET /user/products/:userId", err);
     return res.status(500).send({
