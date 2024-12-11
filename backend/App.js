@@ -4,6 +4,7 @@ const multer = require("multer");
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
+const cookieParser = require("cookie-parser");
 
 // MySQL
 const db = mysql.createConnection({
@@ -34,9 +35,15 @@ const port = "8081";
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use("/uploads", express.static("uploads"));
+app.use(cookieParser());
 
 app.listen(port, () => {
   console.log("App listening at http://%s:%s", host, port);
@@ -114,11 +121,20 @@ app.post("/login", (req, res) => {
           .send({ error: "Error when getting user " + err });
       }
 
+      // Check if user with given credentials was found
       if (results.length === 0) {
         return res.status(401).send({ error: "Invalid username or password." });
       }
 
-      return res.status(200).send(results[0]);
+      // Send cookie to
+      res.cookie("user", results[0], {
+        maxAge: 1000 * 60 * 30,
+        secure: true,
+        sameSite: "none",
+      });
+
+      res.status(200);
+      res.send("Sucessfully set user cookie");
     });
   } catch (err) {
     console.log("Error in POST /login", err);

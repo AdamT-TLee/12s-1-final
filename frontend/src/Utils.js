@@ -1,8 +1,11 @@
 import "./Carousel.css";
 
 import { Link, useNavigate } from "react-router-dom";
+import { useReducer } from "react";
+import Cookies from "js-cookie";
 
-export function Navbar({ user, setUser }) {
+export function Navbar() {
+  const [, forceUpdate] = useReducer((x) => x + 1, 0);
   const navigate = useNavigate();
 
   const searchProducts = async (e) => {
@@ -17,6 +20,11 @@ export function Navbar({ user, setUser }) {
     if (search.trim() !== "") {
       navigate(url);
     }
+  };
+
+  const deleteUserCookie = () => {
+    Cookies.remove("user");
+    forceUpdate();
   };
 
   return (
@@ -88,10 +96,12 @@ export function Navbar({ user, setUser }) {
                 </svg>
               </a>
               <ul className="dropdown-menu dropdown-menu-end">
-                {user ? (
+                {Cookies.get("user") ? (
                   <>
                     <li>
-                      <h5 className="dropdown-item-text">{user.email}</h5>
+                      <h5 className="dropdown-item-text">
+                        {JSON.parse(Cookies.get("user").slice(2)).email}
+                      </h5>
                     </li>
                     <li>
                       <hr className="dropdown-divider" />
@@ -113,7 +123,7 @@ export function Navbar({ user, setUser }) {
                       <button
                         className="dropdown-item"
                         to="#"
-                        onClick={() => setUser(null)}
+                        onClick={deleteUserCookie}
                       >
                         Logout
                       </button>
