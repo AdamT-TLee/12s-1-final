@@ -27,7 +27,7 @@ export default function App() {
             <Route path="about" element={<About />} />
             <Route path="products" element={<Products />} />
             <Route path="products/:search" element={<Products />} />
-            <Route path="product/:id" element={<Product />} />
+            <Route path="product/:id" element={<Product cart={cart} setCart={setCart}/>} />
             <Route path="login" element={<LoginRegister />} />
             <Route path="register" element={<LoginRegister />} />
             <Route path="cart" element={<Cart cart={cart} setFormData={setFormData} />} />

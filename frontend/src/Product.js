@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 
 import "./Product.css";
 
-export default function Product() {
+export default function Product({cart, setCart}) {
   const { id } = useParams();
   const [product, setProduct] = useState([]);
 
@@ -17,6 +17,11 @@ export default function Product() {
 
     fetchProduct();
   }, []);
+
+  const addToCart = (product) => {
+    setCart([...cart, product]);
+    console.log(cart);
+  };
 
   let card = (
     <div className="card p-3 mt-5" data-bs-theme="dark">
@@ -40,8 +45,8 @@ export default function Product() {
       </div>
       <div className="row g-0 mt-2">
         <div className="col-md-4 d-flex justify-content-center">
-          <a href="#" className="btn btn-primary w-100" id="purchase-btn">
-            Add to Cart
+          <a href="#" className="btn btn-primary w-100" id="purchase-btn" onClick={() => addToCart(product)}>
+          <i className="bi bi-cart3 me-2"></i>Add to Cart
           </a>
         </div>
       </div>

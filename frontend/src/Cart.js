@@ -59,12 +59,13 @@ function Cart({ cart, setFormData }) {
     }
   };
   const onError = (errors, e) => console.log(errors, e);
+  console.log(cart);
 
   return (
     <div>
-      <nav className="navbar navbar-expand navbar-light bg-light">
+      <nav className="navbar navbar-expand navbar-light bg-secondary">
         <div className="container-fluid">
-          <Link to="/" className="btn btn-secondary">
+          <Link to="/" className="btn btn-dark">
             <i className="bi bi-arrow-left-circle"></i> Return
           </Link>
         </div>
@@ -83,7 +84,7 @@ function Cart({ cart, setFormData }) {
               >
                 <div>
                   <img
-                    src={item.image.url}
+                    src={process.env.REACT_APP_BASE_API + item.image_url}
                     alt={item.name}
                     style={{ width: "100px", marginRight: "10px" }}
                   />
