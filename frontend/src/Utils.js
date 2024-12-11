@@ -49,13 +49,13 @@ export function Navbar() {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <Link className="nav-link" to="/about">
-                  About
+                <Link className="nav-link" to="/products">
+                  Products
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/products">
-                  Products
+                <Link className="nav-link" to="/about">
+                  About
                 </Link>
               </li>
             </ul>
@@ -112,7 +112,7 @@ export function Navbar() {
                       </Link>
                     </li>
                     <li>
-                      <Link className="dropdown-item" to="#">
+                      <Link className="dropdown-item" to="/cart">
                         My Cart
                       </Link>
                     </li>

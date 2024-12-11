@@ -11,8 +11,12 @@ import About from "./About";
 import Products from "./Products";
 import Product from "./Product";
 import LoginRegister from "./LoginRegister";
+import Cart from "./Cart";
 
 export default function App() {
+  const [cart, setCart] = useState([]);
+  const [formData, setFormData] = useState({});
+
   return (
     <div>
       <BrowserRouter>
@@ -26,6 +30,7 @@ export default function App() {
             <Route path="product/:id" element={<Product />} />
             <Route path="login" element={<LoginRegister />} />
             <Route path="register" element={<LoginRegister />} />
+            <Route path="cart" element={<Cart cart={cart} setFormData={setFormData} />} />
           </Routes>
         </div>
       </BrowserRouter>
