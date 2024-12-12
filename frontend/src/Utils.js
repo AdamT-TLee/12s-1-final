@@ -158,7 +158,7 @@ export function Carousel({ id, products }) {
           <div className="row g-0">
             <div className="col-md-4 ps-5 d-flex justify-content-center">
               <Link
-                to={`/product?id=${product.id}`}
+                to={`/product/${product.id}`}
                 className="align-content-center link-light link-opacity-50-hover link-underline-opacity-50-hover"
               >
                 <img

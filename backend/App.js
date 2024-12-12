@@ -42,7 +42,6 @@ app.use(
   })
 );
 app.use(express.json());
-app.use(express.json());
 app.use("/uploads", express.static("uploads"));
 app.use(cookieParser());
 
@@ -155,6 +154,9 @@ app.get("/user/product/:id", (req, res) => {
   }
 });
 
+/**
+ * Adds a product given the user adding it
+ */
 app.put("/user/product/:id", upload.single("image"), (req, res) => {
   try {
     if (req.cookies["user"]) {
@@ -211,6 +213,9 @@ app.put("/user/product/:id", upload.single("image"), (req, res) => {
   }
 });
 
+/**
+ * Adds a product given the user adding it
+ */
 app.post("/user/product", upload.single("image"), (req, res) => {
   try {
     if (req.cookies["user"]) {
@@ -248,15 +253,22 @@ app.post("/user/product", upload.single("image"), (req, res) => {
   }
 });
 
+/**
+ * Deletes a product given its id and the user deleting it
+ */
 app.delete("/user/product/:id", (req, res) => {
   try {
     if (req.cookies["user"]) {
       const productId = req.params.id;
-      const query = "DELETE FROM product WHERE id = ? AND user_id = ?";
+      const selectQuery =
+        "SELECT image_url FROM product WHERE id = ? AND user_id = ?";
+      const deleteQuery = "DELETE FROM product WHERE id = ? AND user_id = ?";
+
+      let url = null;
 
       const { id } = req.cookies["user"];
 
-      db.query(query, [productId, id], (err, results) => {
+      db.query(selectQuery, [productId, id], (err, results) => {
         if (err) {
           console.log("Error in DELETE /user/products/" + userId, err);
           return res.status(500).send({
@@ -268,7 +280,32 @@ app.delete("/user/product/:id", (req, res) => {
           });
         }
 
-        return res.status(200).send("Sucessfully deleted product");
+        url = "." + results[0].image_url;
+
+        db.query(deleteQuery, [productId, id], (err, results) => {
+          if (err) {
+            console.log("Error in DELETE /user/products/" + userId, err);
+            return res.status(500).send({
+              error:
+                "Error when deleting user product with id " +
+                productId +
+                " " +
+                err,
+            });
+          }
+
+          fs.unlink(url, (err) => {
+            if (err) {
+              return res
+                .status(200)
+                .send(
+                  "Sucessfully deleted product, failed to delete image from storage"
+                );
+            } else {
+              return res.status(200).send("Sucessfully deleted product");
+            }
+          });
+        });
       });
     } else {
       return res.status(401).send({ error: "User not logged in." });
@@ -283,8 +320,11 @@ app.delete("/user/product/:id", (req, res) => {
   }
 });
 
-// Checks if a given email and password are valid
-// Creates a cookie on success
+/**
+ * Checks if a given email and password are valid
+ *
+ * Creates a cookie on success
+ */
 app.post("/login", (req, res) => {
   try {
     const { email, password } = req.body;
@@ -321,7 +361,9 @@ app.post("/login", (req, res) => {
   }
 });
 
-// Adds a user
+/**
+ * Adds a user to the database
+ */
 app.post("/register", (req, res) => {
   try {
     const { email, password } = req.body;

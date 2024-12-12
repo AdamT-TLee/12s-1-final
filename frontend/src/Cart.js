@@ -29,7 +29,7 @@ function Cart({ cart, setCart, setFormData }) {
   const {
     register,
     handleSubmit,
-    formState: { errors},
+    formState: { errors },
   } = useForm({ mode: "all", resolver: yupResolver(schema) });
 
   // Create an object to track item counts
@@ -44,7 +44,6 @@ function Cart({ cart, setCart, setFormData }) {
 
   // Convert the object to an array for mapping
   const cartItems = Object.values(itemCounts);
-
 
   // Handle item removal
   const removeItem = (itemId) => {
@@ -70,7 +69,7 @@ function Cart({ cart, setCart, setFormData }) {
 
   return (
     <div>
-      <nav className="navbar navbar-expand navbar-light bg-secondary">
+      <nav className="navbar navbar-expand bg-secondary">
         <div className="container-fluid">
           <Link to="/" className="btn btn-dark">
             <i className="bi bi-arrow-left-circle"></i> Return
@@ -95,11 +94,14 @@ function Cart({ cart, setCart, setFormData }) {
                     alt={item.name}
                     style={{ width: "100px", marginRight: "10px" }}
                   />
-                  <strong>{item.name}</strong> - ${item.price} x{" "}
-                  {item.quantity} = ${item.price * item.quantity}
+                  <strong>{item.name}</strong> - ${item.price} x {item.quantity}{" "}
+                  = ${item.price * item.quantity}
                 </div>
-                <button className="btn btn-danger btn-sm" onClick={() => removeItem(item.id)}>
-                <i class="bi bi-trash"></i> Remove
+                <button
+                  className="btn btn-danger btn-sm"
+                  onClick={() => removeItem(item.id)}
+                >
+                  <i class="bi bi-trash"></i> Remove
                 </button>
               </li>
             ))}

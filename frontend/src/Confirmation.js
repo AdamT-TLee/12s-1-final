@@ -17,9 +17,9 @@ function Confirmation({ cart, dataF, clearCart }) {
 
   return (
     <div>
-      <nav className="navbar navbar-expand navbar-light bg-light">
+      <nav className="navbar navbar-expand bg-secondary">
         <div className="container-fluid">
-          <Link to="/" className="btn btn-success" onClick={clearCart}>
+          <Link to="/" className="btn btn-dark" onClick={clearCart}>
             <i className="bi bi-arrow-left-circle"></i> Continue Shopping
           </Link>
         </div>
