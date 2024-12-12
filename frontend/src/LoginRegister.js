@@ -258,7 +258,7 @@ export default function LoginRegister({ setUser }) {
                       type="button"
                       onClick={() => setPasswordVisibleR(!passwordVisibleR)}
                     >
-                      {passwordVisibleL ? (
+                      {passwordVisibleR ? (
                         <i className="bi bi-eye-fill"></i>
                       ) : (
                         <i className="bi bi-eye-slash-fill"></i>
