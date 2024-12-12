@@ -4,7 +4,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 
 import { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Navbar } from "./Utils.js";
+import { Footer, Navbar } from "./Utils.js";
 import Home from "./Home";
 import About from "./About";
 import Products from "./Products";
@@ -20,7 +20,6 @@ export default function App() {
   const [cart, setCart] = useState([]);
   const [formData, setFormData] = useState({});
 
-  
   const clearCart = () => {
     setCart([]); // Clear the cart
   };
@@ -42,20 +41,28 @@ export default function App() {
             <Route path="user/products" element={<UserProducts />} />
             <Route path="user/product/:id" element={<UpdateUserProduct />} />
             <Route path="user/addproduct" element={<AddUserProduct />} />
-            <Route path="login" element={<LoginRegister />} />
-            <Route path="register" element={<LoginRegister />} />
+            <Route path="user/login" element={<LoginRegister />} />
+            <Route path="user/register" element={<LoginRegister />} />
             <Route
               path="cart"
-              element={<Cart cart={cart} setCart={setCart} setFormData={setFormData} />}
+              element={
+                <Cart cart={cart} setCart={setCart} setFormData={setFormData} />
+              }
             />
             <Route
               path="confirmation"
               element={
-                <Confirmation cart={cart} dataF={formData} clearCart={clearCart} />
+                <Confirmation
+                  cart={cart}
+                  dataF={formData}
+                  clearCart={clearCart}
+                />
               }
             />
           </Routes>
         </div>
+
+        <Footer />
       </BrowserRouter>
     </div>
   );

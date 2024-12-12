@@ -325,7 +325,7 @@ app.delete("/user/product/:id", (req, res) => {
  *
  * Creates a cookie on success
  */
-app.post("/login", (req, res) => {
+app.post("/user/login", (req, res) => {
   try {
     const { email, password } = req.body;
     const query = "SELECT id, email FROM user where email = ? AND password = ?";
@@ -364,7 +364,7 @@ app.post("/login", (req, res) => {
 /**
  * Adds a user to the database
  */
-app.post("/register", (req, res) => {
+app.post("/user/register", (req, res) => {
   try {
     const { email, password } = req.body;
     const query = "INSERT INTO user (email, password) VALUES (?, ?)";

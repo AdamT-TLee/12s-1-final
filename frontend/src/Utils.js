@@ -132,7 +132,7 @@ export function Navbar() {
                 ) : (
                   <>
                     <li>
-                      <Link className="dropdown-item" to="/login">
+                      <Link className="dropdown-item" to="/user/login">
                         Login/Register
                       </Link>
                     </li>
